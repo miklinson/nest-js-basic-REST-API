@@ -1,4 +1,4 @@
-import { Injectable, Logger, NotFoundException } from '@nestjs/common';
+import { Injectable, Logger, NotFoundException, UnprocessableEntityException } from '@nestjs/common';
 import { DogsModel } from './dogs.interface';
 
 @Injectable()
@@ -16,6 +16,22 @@ export class DogsService {
         if(!dog){
             throw new NotFoundException('Dog not found');
         }
+        return dog;
+    }
+
+    public create(dog: DogsModel): DogsModel {
+        const nameExist: boolean = this.dogs.some(dog => dog.name === dog.name);
+        if (nameExist) {
+            throw new UnprocessableEntityException('Dog name already exists.');
+        }
+
+        const maxId: number = Math.max(...this.dogs.map(dog => dog.id));
+        const id: number = maxId + 1;
+
+        // create and insert new dog
+        const newDog: DogsModel = { ...dog, id, };
+        this.dogs.push(newDog);
+
         return dog;
     }
 

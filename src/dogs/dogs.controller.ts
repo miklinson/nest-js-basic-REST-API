@@ -1,4 +1,4 @@
-import { Controller, Get, Param, ParseIntPipe } from '@nestjs/common';
+import { Body, Controller, Get, Param, ParseIntPipe, Post } from '@nestjs/common';
 import { DogsService } from './dogs.service';
 import { DogsModel } from './dogs.interface';
 
@@ -14,4 +14,9 @@ export class DogsController {
   public findOne(@Param('id', ParseIntPipe) id: number): DogsModel {
     return this.dogsService.findOne(id);
   } 
+
+  @Post()
+  public create(@Body() dog: DogsModel): DogsModel {
+    return this.dogsService.create(dog);
+  }
 }
