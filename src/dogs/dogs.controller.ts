@@ -1,4 +1,4 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Get, Param, ParseIntPipe } from '@nestjs/common';
 import { DogsService } from './dogs.service';
 import { DogsModel } from './dogs.interface';
 
@@ -6,7 +6,12 @@ import { DogsModel } from './dogs.interface';
 export class DogsController {
   constructor(private readonly dogsService: DogsService) {}
   @Get()
-  findAll(): Array<DogsModel> {
+  public findAll(): Array<DogsModel> {
     return this.dogsService.findAll();
   }
+
+  @Get(':id')
+  public findOne(@Param('id', ParseIntPipe) id: number): DogsModel {
+    return this.dogsService.findOne(id);
+  } 
 }
