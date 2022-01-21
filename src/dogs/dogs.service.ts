@@ -35,4 +35,13 @@ export class DogsService {
         return dog;
     }
 
+    public delete(id: number): void {
+        const index: number = this.dogs.findIndex(dog => dog.id === dog.id);
+        // -1 is returned when no findIndex() match is found
+        if (index === -1) {
+            throw new NotFoundException('Dog not found');
+        }
+        this.dogs.splice(index, 1);
+    }
+
 }
