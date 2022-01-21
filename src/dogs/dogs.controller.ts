@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, ParseIntPipe, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, ParseIntPipe, Post, Put } from '@nestjs/common';
 import { DogsService } from './dogs.service';
 import { DogsModel } from './dogs.interface';
 
@@ -23,5 +23,10 @@ export class DogsController {
   @Delete(':id')
   public delete(@Param('id', ParseIntPipe) id: number): void {
     this.dogsService.delete(id);
+  }
+
+  @Put(':id')
+  public update(@Param('id', ParseIntPipe) id: number, @Body() dog: DogsModel): DogsModel {
+    return this.dogsService.update(id, dog);
   }
 }

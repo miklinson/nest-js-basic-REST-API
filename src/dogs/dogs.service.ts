@@ -20,7 +20,7 @@ export class DogsService {
     }
 
     public create(dog: DogsModel): DogsModel {
-        const nameExist: boolean = this.dogs.some(dog => dog.name === dog.name);
+        const nameExist: boolean = this.dogs.some(el => el.name === dog.name);
         if (nameExist) {
             throw new UnprocessableEntityException('Dog name already exists.');
         }
@@ -36,12 +36,27 @@ export class DogsService {
     }
 
     public delete(id: number): void {
-        const index: number = this.dogs.findIndex(dog => dog.id === dog.id);
+        const index: number = this.dogs.findIndex(dog => dog.id === id);
         // -1 is returned when no findIndex() match is found
         if (index === -1) {
             throw new NotFoundException('Dog not found');
         }
         this.dogs.splice(index, 1);
+    }
+
+    public update(id: number, dog: DogsModel): DogsModel {
+        const index: number = this.dogs.findIndex(dog => dog.id === id);
+        // -1 is returned when no findIndex() match is found
+        if (index === -1) {
+            throw new NotFoundException('Dog not found');
+        }
+        const nameExist: boolean = this.dogs.some(el => el.name === dog.name && el.id !== id);
+        if (nameExist) {
+            throw new UnprocessableEntityException('Dog name already exists.');
+        }
+        const dogDetails: DogsModel  = { ...dog, id };
+        this.dogs[index] = dogDetails;
+        return dog;
     }
 
 }
