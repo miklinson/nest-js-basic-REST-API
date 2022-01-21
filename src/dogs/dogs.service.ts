@@ -25,7 +25,7 @@ export class DogsService {
             throw new UnprocessableEntityException('Dog name already exists.');
         }
 
-        const maxId: number = Math.max(...this.dogs.map(dog => dog.id));
+        const maxId: number = Math.max(...this.dogs.map(dog => dog.id),0);
         const id: number = maxId + 1;
 
         // create and insert new dog
